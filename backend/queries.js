@@ -47,7 +47,9 @@ const createUser = (request, response) => {
   const { username, email, password } = request.body
 
   pool.query('SELECT * FROM tblusers WHERE username = $1', [username], (error, results) => {
-    if (results.rows.length > 0) {
+    if (error) {
+      throw error
+    } else if (results.rows.length > 0) {
       response.status(201).json({'error': 'Username exist'})
       return
     }
